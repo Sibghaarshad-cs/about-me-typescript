@@ -1,5 +1,10 @@
 import * as readline from "readline";
 
+interface Person {
+  name: string;
+  favoriteLanguage: string;
+}
+
 console.log("About Me Program");
 
 const rl = readline.createInterface({
@@ -8,7 +13,16 @@ const rl = readline.createInterface({
 });
 
 rl.question("Enter your name: ", (name) => {
-  console.log(name);
+  rl.question("Enter your favorite language: ", (favoriteLanguage) => {
 
-  rl.close();
+    const person: Person = {
+      name: name,
+      favoriteLanguage: favoriteLanguage,
+    };
+
+    console.log(name);
+    console.log(favoriteLanguage);
+
+    rl.close();
+  });
 });
