@@ -1,39 +1,58 @@
+import { useState, useEffect } from "react";
+import SearchBar from "./components/SearchBar";
 import CityList from "./components/CityList";
 import cities from "./data";
-import SearchBar from "./components/SearchBar";
-import { useState, useEffect } from "react";
+import "./App.css";
 
 function App() {
+  // State
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+
+  // Fake loading for 2 seconds
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setLoading(false);
     }, 2000);
+
+    return () => clearTimeout(timer);
   }, []);
-if (loading) {
-  return (
-    <div>
-      <h1>Weather Dashboard</h1>
-      <p>Loading weather...</p>
-    </div>
-  );
-}
+
+  // Filter cities
   const filteredCities = cities.filter((city) =>
-  city.name.toLowerCase().includes(search.toLowerCase())
+    city.name.toLowerCase().includes(search.toLowerCase())
+  );
 
+  // Loading Screen
+  if (loading) {
+    return (
+      <div className="app">
+        <h1>🌤 Weather Dashboard</h1>
 
-  
-);
+        <p className="subtitle">
+          Check the latest weather in your favorite cities
+        </p>
+
+        <div className="loading">
+          ⏳ Loading weather...
+        </div>
+      </div>
+    );
+  }
+
+  // Main UI
   return (
-    <div>
-      <h1>Weather Dashboard</h1>
+    <div className="app">
+      <h1>🌤 Weather Dashboard</h1>
+
+      <p className="subtitle">
+        Check the latest weather in your favorite cities
+      </p>
 
       <SearchBar
-  search={search}
-  setSearch={setSearch}
-/>
-
+        search={search}
+        setSearch={setSearch}
+      />
 
       <CityList cities={filteredCities} />
     </div>

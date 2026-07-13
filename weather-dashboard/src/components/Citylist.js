@@ -6,7 +6,7 @@ function CityList({ cities }) {
   }
 
   return (
-    <div>
+     <div className="city-list">
       {cities.map((city) => (
         <CityCard
           key={city.id}
