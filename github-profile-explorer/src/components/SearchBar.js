@@ -1,11 +1,7 @@
-import { useState } from "react";
-
-function SearchBar() {
-  const [username, setUsername] = useState("");
-
+function SearchBar({ username, setUsername, handleSearch }) {
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(username);
+    handleSearch();
   }
 
   return (
