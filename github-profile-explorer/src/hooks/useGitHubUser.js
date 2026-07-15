@@ -1,43 +1,83 @@
 import { useState } from "react";
 
 function useGitHubUser() {
+
   const [user, setUser] = useState(null);
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+
   async function handleSearch(username) {
-    if (!username) return;
+
+    if (!username.trim()) {
+      setError("Please enter a username.");
+      return;
+    }
+
 
     setLoading(true);
     setError("");
     setUser(null);
     setRepos([]);
 
+
     try {
-      const response = await fetch(
+
+      // Fetch user
+      const userResponse = await fetch(
         `https://api.github.com/users/${username}`
       );
 
-      if (!response.ok) {
-        throw new Error("User not found.");
+
+      // Check if user exists
+      if (userResponse.status === 404) {
+        throw new Error("GitHub user not found.");
       }
 
-      const data = await response.json();
-      setUser(data);
 
+      if (!userResponse.ok) {
+        throw new Error("Something went wrong. Try again.");
+      }
+
+
+      const userData = await userResponse.json();
+
+      setUser(userData);
+
+
+
+      // Fetch repositories
       const repoResponse = await fetch(
         `https://api.github.com/users/${username}/repos`
       );
 
+
+      if (!repoResponse.ok) {
+        throw new Error("Repositories could not be loaded.");
+      }
+
+
       const repoData = await repoResponse.json();
+
       setRepos(repoData);
+
+
+
     } catch (error) {
+
+      setUser(null);
+      setRepos([]);
       setError(error.message);
+
     } finally {
+
       setLoading(false);
+
     }
+
   }
+
 
   return {
     user,
@@ -46,6 +86,7 @@ function useGitHubUser() {
     error,
     handleSearch,
   };
+
 }
 
 export default useGitHubUser;

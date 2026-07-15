@@ -1,56 +1,92 @@
 import { useState } from "react";
+
 import SearchBar from "../components/SearchBar";
 import RepositoryList from "../components/RepositoryList";
+import ProfileCard from "../components/ProfileCard";
+
 import useGitHubUser from "../hooks/useGitHubUser";
 
-function App() {
-  const [username, setUsername] = useState("");
 
-  const {
-    user,
-    repos,
-    loading,
-    error,
-    handleSearch,
-  } = useGitHubUser();
+function Home() {
 
-  return (
-    <div>
-      <h1>GitHub Profile Explorer</h1>
 
-      <SearchBar
-        username={username}
-        setUsername={setUsername}
-        handleSearch={() => handleSearch(username)}
-      />
+const [username,setUsername] = useState("");
 
-      {loading && <p>Loading...</p>}
 
-      {error && <p>{error}</p>}
 
-      {user && (
-        <div>
-          <img
-            src={user.avatar_url}
-            alt={user.name}
-            width="150"
-          />
+const {
+ user,
+ repos,
+ loading,
+ error,
+ handleSearch
 
-          <h2>{user.name}</h2>
+} = useGitHubUser();
 
-          <p>{user.bio}</p>
 
-          <p>Followers: {user.followers}</p>
 
-          <p>Following: {user.following}</p>
+return (
 
-          <p>Public Repositories: {user.public_repos}</p>
-        </div>
-      )}
+<div>
 
-      {repos.length > 0 && <RepositoryList repos={repos} />}
-    </div>
-  );
+
+<SearchBar
+
+username={username}
+
+setUsername={setUsername}
+
+searchUser={()=>handleSearch(username)}
+
+/>
+
+
+
+{
+loading &&
+
+<p className="text-center mt-5">
+Loading...
+</p>
+
 }
 
-export default App;
+
+
+{
+error &&
+
+<p className="text-center text-red-500">
+{error}
+</p>
+
+}
+
+
+
+{
+user &&
+
+<ProfileCard user={user}/>
+
+}
+
+
+
+{
+repos.length > 0 &&
+
+<RepositoryList repos={repos}/>
+
+}
+
+
+
+</div>
+
+);
+
+}
+
+
+export default Home;

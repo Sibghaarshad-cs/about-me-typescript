@@ -5,10 +5,37 @@ export const FavouriteContext = createContext();
 function FavouriteProvider({ children }) {
   const [favorites, setFavorites] = useState([]);
 
-  function addToFavorites(repo) {
-    setFavorites((prevFavorites) => [...prevFavorites, repo]);
-  }
+  function addToFavorites(repo){
 
+setFavorites((previous)=>{
+
+
+const alreadySaved = previous.find(
+
+(item)=>item.id === repo.id
+
+);
+
+
+
+if(alreadySaved){
+
+return previous;
+
+}
+
+
+
+return [
+...previous,
+repo
+];
+
+
+});
+
+
+}
   return (
     <FavouriteContext.Provider
       value={{
