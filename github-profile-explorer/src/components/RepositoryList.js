@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import { FavouriteContext } from "../Context/FavouriteContext";
+
 function RepositoryList({ repos }) {
+  const { addToFavorites } = useContext(FavouriteContext);
+
   return (
     <div>
       <h2>Repositories</h2>
@@ -12,6 +17,13 @@ function RepositoryList({ repos }) {
           <p>
             ⭐ Stars: {repo.stargazers_count} | 🍴 Forks: {repo.forks_count}
           </p>
+
+          <button onClick={() => addToFavorites(repo)}>
+            ⭐ Add to Favorites
+          </button>
+
+          <br />
+          <br />
 
           <a
             href={repo.html_url}
